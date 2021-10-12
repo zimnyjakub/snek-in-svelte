@@ -1,7 +1,6 @@
 <script>
   import { renderable } from "./game.js";
   import { cinnabar, englishViolet, ivory, maximumYellow } from "./colors.js";
-  import { time } from "./game.js";
 
   const size = 20;
   const marginLeft = 80;
@@ -9,7 +8,7 @@
   const lineWidth = 1;
 
   let timePassed = 0;
-  const tick = 30;
+  const tick = 60;
   const minX = 0;
   const maxX = 50;
   const minY = 0;
@@ -25,7 +24,7 @@
   let headPos = [5, 5];
   let tailTiles = [];
   let tailLen = 5;
-  let currentBearing = directions.WEST;
+  let currentBearing = directions.NORTH;
 
   function advance(headPos, bearing) {
     let newPos = [headPos];
@@ -128,9 +127,7 @@
     });
 
     if (timePassed % tick === 0) {
-      tailTiles.push([headPos[0], headPos[1]]);
       headPos = advance(headPos, currentBearing);
-      console.log(tailTiles);
     }
 
     timePassed += 1;
