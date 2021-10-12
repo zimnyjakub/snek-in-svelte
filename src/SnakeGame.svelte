@@ -3,7 +3,7 @@
   import { cinnabar, englishViolet, ivory, maximumYellow } from "./colors.js";
   import { time } from "./game.js";
 
-  const size = 60;
+  const size = 20;
   const marginLeft = 80;
   const marginTop = 80;
   const lineWidth = 1;
@@ -11,9 +11,9 @@
   let timePassed = 0;
   const tick = 30;
   const minX = 0;
-  const maxX = 10;
+  const maxX = 50;
   const minY = 0;
-  const maxY = 10;
+  const maxY = 50;
 
   const directions = Object.freeze({
     NORTH: 0,
@@ -23,6 +23,8 @@
   });
 
   let headPos = [5, 5];
+  let tailTiles = [];
+  let tailLen = 5;
   let currentBearing = directions.WEST;
 
   function advance(headPos, bearing) {
@@ -82,6 +84,21 @@
       }
     }
 
+    for (let t = 0; t <= tailLen; t++) {
+      context.beginPath();
+      context.strokeStyle = cinnabar;
+      context.fillStyle = maximumYellow;
+      context.rect(
+        marginTop + headPos[0] * (size + lineWidth),
+        marginLeft + headPos[1] * (size + lineWidth),
+        size,
+        size
+      );
+      context.fill();
+      context.stroke();
+      context.closePath();
+    }
+
     context.beginPath();
     context.strokeStyle = cinnabar;
     context.fillStyle = maximumYellow;
@@ -95,8 +112,25 @@
     context.stroke();
     context.closePath();
 
+    tailTiles.forEach((tailTile) => {
+      context.beginPath();
+      context.strokeStyle = cinnabar;
+      context.fillStyle = maximumYellow;
+      context.rect(
+        marginTop + tailTile[0] * (size + lineWidth),
+        marginLeft + tailTile[1] * (size + lineWidth),
+        size,
+        size
+      );
+      context.fill();
+      context.stroke();
+      context.closePath();
+    });
+
     if (timePassed % tick === 0) {
+      tailTiles.push([headPos[0], headPos[1]]);
       headPos = advance(headPos, currentBearing);
+      console.log(tailTiles);
     }
 
     timePassed += 1;
