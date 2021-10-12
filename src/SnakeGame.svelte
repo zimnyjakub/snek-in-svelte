@@ -3,40 +3,70 @@
   import { cinnabar, englishViolet, ivory, maximumYellow } from "./colors.js";
   import { time } from "./game.js";
 
-  let grid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
-
-  let currentPos = [0, 0];
-
   const size = 60;
   const marginLeft = 80;
   const marginTop = 80;
   const lineWidth = 1;
 
-  let headPos = [marginLeft, marginTop];
-
   let timePassed = 0;
+  const tick = 30;
+  const minX = 0;
+  const maxX = 10;
+  const minY = 0;
+  const maxY = 10;
 
-  const tick = 60;
+  const directions = Object.freeze({
+    NORTH: 0,
+    EAST: 1,
+    SOUTH: 2,
+    WEST: 3,
+  });
+
+  let headPos = [5, 5];
+  let currentBearing = directions.WEST;
+
+  function advance(headPos, bearing) {
+    let newPos = [headPos];
+
+    switch (bearing) {
+      case directions.NORTH:
+        newPos = [headPos[0], headPos[1] - 1];
+        break;
+      case directions.EAST:
+        newPos = [headPos[0] + 1, headPos[1]];
+        break;
+      case directions.SOUTH:
+        newPos = [headPos[0], headPos[1] + 1];
+        break;
+      case directions.WEST:
+        newPos = [headPos[0] - 1, headPos[1]];
+        break;
+    }
+
+    const [x, y] = newPos;
+    if (x > maxX - 1) {
+      return [minX, y];
+    }
+    if (x < minX) {
+      return [maxX - 1, y];
+    }
+    if (y > maxY - 1) {
+      return [x, minY];
+    }
+    if (y < minY) {
+      return [x, maxY - 1];
+    }
+    return [x, y];
+  }
 
   renderable((props, dt) => {
     const { context } = props;
 
     context.save();
-    context.lineWidth = 1;
+    context.lineWidth = lineWidth;
 
-    for (let y = 0; y < 10; y++) {
-      for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < maxY; y++) {
+      for (let x = 0; x < maxX; x++) {
         context.beginPath();
         context.rect(
           x + marginLeft + x * size,
@@ -55,17 +85,18 @@
     context.beginPath();
     context.strokeStyle = cinnabar;
     context.fillStyle = maximumYellow;
-    context.lineWidth = lineWidth;
-    context.rect(headPos[0], headPos[1], size, size);
+    context.rect(
+      marginTop + headPos[0] * (size + lineWidth),
+      marginLeft + headPos[1] * (size + lineWidth),
+      size,
+      size
+    );
     context.fill();
     context.stroke();
     context.closePath();
 
-    if (timePassed % tick == 0) {
-      console.log(timePassed);
-      if (timePassed % tick === 0) {
-        headPos = [headPos[0] + size + lineWidth, headPos[1]];
-      }
+    if (timePassed % tick === 0) {
+      headPos = advance(headPos, currentBearing);
     }
 
     timePassed += 1;
