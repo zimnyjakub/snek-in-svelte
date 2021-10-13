@@ -8,11 +8,14 @@
   const lineWidth = 1;
 
   let timePassed = 0;
-  const tick = 60;
+  const tick = 30;
   const minX = 0;
   const maxX = 50;
   const minY = 0;
   const maxY = 50;
+
+  let key;
+  let keyCode;
 
   const directions = Object.freeze({
     NORTH: 0,
@@ -24,7 +27,7 @@
   let headPos = [5, 5];
   let tailTiles = [[headPos]];
   let tailLen = 5;
-  let currentBearing = directions.NORTH;
+  let currentBearing = directions.SOUTH;
 
   function advance(headPos, bearing) {
     let newPos = [headPos];
@@ -58,6 +61,23 @@
       return [x, maxY - 1];
     }
     return [x, y];
+  }
+
+  function handleKeydown(event) {
+    switch (event.key) {
+      case "ArrowDown":
+        currentBearing = directions.SOUTH;
+        break;
+      case "ArrowLeft":
+        currentBearing = directions.WEST;
+        break;
+      case "ArrowUp":
+        currentBearing = directions.NORTH;
+        break;
+      case "ArrowRight":
+        currentBearing = directions.EAST;
+        break;
+    }
   }
 
   renderable((props, dt) => {
@@ -143,6 +163,8 @@
     context.restore();
   });
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <!-- The following allows this component to nest children -->
 <slot />
