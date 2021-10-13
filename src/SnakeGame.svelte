@@ -22,7 +22,7 @@
   });
 
   let headPos = [5, 5];
-  let tailTiles = [];
+  let tailTiles = [[headPos]];
   let tailLen = 5;
   let currentBearing = directions.NORTH;
 
@@ -128,6 +128,14 @@
 
     if (timePassed % tick === 0) {
       headPos = advance(headPos, currentBearing);
+
+      if (tailTiles.length != tailLen) {
+        tailTiles.push(headPos);
+      }
+
+      if (tailTiles.length == tailLen) {
+        tailTiles.shift();
+      }
     }
 
     timePassed += 1;
