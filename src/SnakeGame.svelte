@@ -14,9 +14,6 @@
   const minY = 0;
   const maxY = 50;
 
-  let key;
-  let keyCode;
-
   const directions = Object.freeze({
     NORTH: 0,
     EAST: 1,
@@ -66,15 +63,19 @@
   function handleKeydown(event) {
     switch (event.key) {
       case "ArrowDown":
+        if (currentBearing == directions.NORTH) break;
         currentBearing = directions.SOUTH;
         break;
       case "ArrowLeft":
+        if (currentBearing == directions.EAST) break;
         currentBearing = directions.WEST;
         break;
       case "ArrowUp":
+        if (currentBearing == directions.SOUTH) break;
         currentBearing = directions.NORTH;
         break;
       case "ArrowRight":
+        if (currentBearing == directions.WEST) break;
         currentBearing = directions.EAST;
         break;
     }
