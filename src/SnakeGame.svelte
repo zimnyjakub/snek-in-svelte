@@ -1,7 +1,8 @@
 <script>
   import { renderable } from "./game.js";
-  import { cinnabar, englishViolet, ivory, maximumYellow } from "./colors.js";
+  import { color0, color1, color2, color3, color4 } from "./colors.js";
   import { randomInt } from "./util.js";
+  import _ from "lodash";
 
   const size = 20;
   const marginLeft = 80;
@@ -22,10 +23,28 @@
     WEST: 3,
   });
 
-  let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
+  // let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
+  let headPos = [10,5];
   let tailTiles = [];
   let tailLen = 5;
-  let currentBearing = randomInt(directions.NORTH, directions.WEST);
+  // let currentBearing = randomInt(directions.NORTH, directions.WEST);
+  let currentBearing = directions.WEST;
+  let foodLoc = [[5,5]];
+
+  function putFood() {
+  }
+
+  function eatFood(food) {
+    tailLen += 1;
+    _.remove(foodLoc, (current) => _.isEqual(current,food))
+  }
+
+  function checkForFood(head) {
+
+    if (foodLoc.some(item => _.isEqual(item, head))) {
+      eatFood(head);
+    }
+  }
 
   function advance(headPos, bearing) {
     let newPos = [headPos];
@@ -58,6 +77,8 @@
     if (y < minY) {
       return [x, maxY - 1];
     }
+
+    checkForFood([x, y])
     return [x, y];
   }
 
@@ -97,32 +118,17 @@
           size,
           size
         );
-        context.strokeStyle = englishViolet;
-        context.fillStyle = ivory;
+        context.strokeStyle = color0;
+        context.fillStyle = color1;
         context.fill();
         context.stroke();
         context.closePath();
       }
     }
 
-    for (let t = 0; t <= tailLen; t++) {
-      context.beginPath();
-      context.strokeStyle = cinnabar;
-      context.fillStyle = maximumYellow;
-      context.rect(
-        marginTop + headPos[0] * (size + lineWidth),
-        marginLeft + headPos[1] * (size + lineWidth),
-        size,
-        size
-      );
-      context.fill();
-      context.stroke();
-      context.closePath();
-    }
-
     context.beginPath();
-    context.strokeStyle = cinnabar;
-    context.fillStyle = maximumYellow;
+    context.strokeStyle = color2;
+    context.fillStyle = color3;
     context.rect(
       marginTop + headPos[0] * (size + lineWidth),
       marginLeft + headPos[1] * (size + lineWidth),
@@ -135,11 +141,26 @@
 
     tailTiles.forEach((tailTile) => {
       context.beginPath();
-      context.strokeStyle = cinnabar;
-      context.fillStyle = maximumYellow;
+      context.strokeStyle = color3;
+      context.fillStyle = color2;
       context.rect(
         marginTop + tailTile[0] * (size + lineWidth),
         marginLeft + tailTile[1] * (size + lineWidth),
+        size,
+        size
+      );
+      context.fill();
+      context.stroke();
+      context.closePath();
+    });
+
+    foodLoc.forEach((food) => {
+      context.beginPath();
+      context.strokeStyle = color4;
+      context.fillStyle = color4;
+      context.rect(
+        marginTop + food[0] * (size + lineWidth),
+        marginLeft + food[1] * (size + lineWidth),
         size,
         size
       );
@@ -170,3 +191,11 @@
 
 <!-- The following allows this component to nest children -->
 <slot />
+
+
+<!-- 
+
+  Known issues: 
+  * you can quickly change direction and reverse the snake if you can manage to squeeze it below one tick duration
+
+ -->

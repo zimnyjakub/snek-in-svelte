@@ -1,5 +1,5 @@
-export const onyx = "#393E41";
-export const cinnabar = "#E94F37";
-export const ivory = "#F6F7EB";
-export const englishViolet = "#5C415D"
-export const maximumYellow = "#FFFC31"
+export const color0 = "#343090";
+export const color1 = "#5f59f7";
+export const color2 = "#6592fd";
+export const color3 = "#44c2fd";
+export const color4 = "#8c61ff";

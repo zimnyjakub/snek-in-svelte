@@ -9,11 +9,11 @@
   import FPS from "./FPS.svelte";
   import SnakeGame from "./SnakeGame.svelte";
 
-  import { onyx } from "./colors";
+  import { color0 } from "./colors";
 </script>
 
 <Canvas>
-  <Background color={onyx} />
+  <Background color={color0} />
   <!-- <DotGrid divisions={30} color='hsla(0, 0%, 100%, 0.5)' /> -->
   <!-- <Character size={10} /> -->
   <!-- <Text
