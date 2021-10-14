@@ -1,6 +1,7 @@
 <script>
   import { renderable } from "./game.js";
   import { cinnabar, englishViolet, ivory, maximumYellow } from "./colors.js";
+  import { randomInt } from "./util.js";
 
   const size = 20;
   const marginLeft = 80;
@@ -21,10 +22,10 @@
     WEST: 3,
   });
 
-  let headPos = [5, 5];
-  let tailTiles = [[headPos]];
+  let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
+  let tailTiles = [];
   let tailLen = 5;
-  let currentBearing = directions.SOUTH;
+  let currentBearing = randomInt(directions.NORTH, directions.WEST);
 
   function advance(headPos, bearing) {
     let newPos = [headPos];
