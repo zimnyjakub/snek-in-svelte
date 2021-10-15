@@ -10,11 +10,11 @@
   const lineWidth = 1;
 
   let timePassed = 0;
-  const tick = 30;
+  const tick = 15;
   const minX = 0;
-  const maxX = 50;
+  const maxX = 25;
   const minY = 0;
-  const maxY = 50;
+  const maxY = 25;
 
   const directions = Object.freeze({
     NORTH: 0,
@@ -32,11 +32,14 @@
   let foodLoc = [[5,5]];
 
   function putFood() {
+    foodLoc.push([randomInt(minX, maxX), randomInt(minY, maxY)]);
   }
 
   function eatFood(food) {
     tailLen += 1;
     _.remove(foodLoc, (current) => _.isEqual(current,food))
+
+    putFood();
   }
 
   function checkForFood(head) {
