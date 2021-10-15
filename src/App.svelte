@@ -7,6 +7,7 @@
   import Character from "./Character.svelte";
   import Text from "./Text.svelte";
   import FPS from "./FPS.svelte";
+  import Score from "./Score.svelte";
   import SnakeGame from "./SnakeGame.svelte";
 
   import { color0 } from "./colors";
@@ -25,6 +26,7 @@
 		y={$height - 20} /> -->
   <SnakeGame />
   <FPS />
+  <Score />
 </Canvas>
 
 <style>

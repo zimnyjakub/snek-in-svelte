@@ -2,6 +2,7 @@
   import { renderable } from "./game.js";
   import { color0, color1, color2, color3, color4 } from "./colors.js";
   import { randomInt } from "./util.js";
+  import { score } from "./game.js"
   import _ from "lodash";
 
   const size = 20;
@@ -38,6 +39,7 @@
   function eatFood(food) {
     tailLen += 1;
     _.remove(foodLoc, (current) => _.isEqual(current,food))
+    score.update(it => it + 1);
 
     putFood();
   }

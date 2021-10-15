@@ -9,6 +9,10 @@ export const context = writable();
 export const canvas = writable();
 export const time = writable(0);
 
+
+//todo: dont make this global state
+export const score = writable(0);
+
 // A more convenient store for grabbing all game props
 export const props = deriveObject({
 	context,
@@ -16,7 +20,8 @@ export const props = deriveObject({
 	width,
 	height,
 	pixelRatio,
-	time
+	time,
+	score
 });
 
 export const key = Symbol();
