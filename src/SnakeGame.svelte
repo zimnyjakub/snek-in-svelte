@@ -24,6 +24,16 @@
     WEST: 3,
   });
 
+  const gameState = Object.freeze({
+    NOT_STARTED_YET: 0,
+    PLAYING: 1,
+    PAUSED: 2,
+    GAME_OVER: 3,
+  })
+
+
+  let currentGameState = gameState.NOT_STARTED_YET;
+
   // let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
   let headPos = [10,5];
   let tailTiles = [];
@@ -175,6 +185,10 @@
     });
 
     if (timePassed % tick === 0) {
+      if (currentGameState !== gameState.PLAYING) {
+        return;
+      }
+
       headPos = advance(headPos, currentBearing);
 
       if (tailTiles.length != tailLen) {
@@ -202,5 +216,7 @@
 
   Known issues: 
   * you can quickly change direction and reverse the snake if you can manage to squeeze it below one tick duration
+  * food can spawn on your tail lol
+  * cant die yet
 
  -->

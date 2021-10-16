@@ -1,17 +1,11 @@
 <script>
   import Text from "./Text.svelte";
-  import { time, renderable } from "./game.js";
+  import { score } from "./game.js";
 
-  let text = "score: 0";
-  renderable((state, dt) => {
-    const { score } = state;
-    text = `score: ${score}`;
-    
-  });
 </script>
 
 <Text
-	{text}
+	text={`score: ${$score}`}
 	fontSize=12
 	fontFamily='Courier New'
 	align='left'
