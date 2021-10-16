@@ -1,7 +1,6 @@
 <script>
-  import { gameState, renderable, width } from "./game.js";
+  import { gameState, renderable, width, score } from "./game.js";
   import GameButton from "./GameButton.svelte";
-  import Text from "./Text.svelte";
   import { tips } from "./wowTips.js";
 
   export let currentGameState;
@@ -16,20 +15,18 @@
   $: if (currentGameState === gameState.PAUSED) {
     text = tips[Math.floor(Math.random() * tips.length)];
     btnHeight = 300;
-  }
+  };
+  $: if (currentGameState === gameState.GAME_OVER) {
+    text = `gg ez, your score: ${$score}`;
+    btnHeight = 100;
+  };
 
   renderable((props) => {
     const { context, width, height } = props;
 
-    switch (currentGameState) {
-      case gameState.PLAYING:
-        break;
-
-      case gameState.NOT_STARTED_YET:
-      case gameState.PAUSED:
-        context.fillStyle = "rgba(0,0,0,0.8)";
-        context.fillRect(0, 0, width, height);
-        break;
+    if (currentGameState !== gameState.PLAYING) {
+      context.fillStyle = "rgba(0,0,0,0.8)";
+      context.fillRect(0, 0, width, height);
     }
   });
 </script>

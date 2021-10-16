@@ -28,13 +28,21 @@
 
   let currentGameState = gameState.NOT_STARTED_YET;
 
-  // let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
-  let headPos = [10, 5];
+  let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
   let tailTiles = [];
   let tailLen = 5;
-  // let currentBearing = randomInt(directions.NORTH, directions.WEST);
-  let currentBearing = directions.WEST;
-  let foodLoc = [[5, 5]];
+  let currentBearing = randomInt(directions.NORTH, directions.WEST);
+  let foodLoc = [[randomInt(0, maxX), randomInt(0, maxY)]];
+
+  function resetGame() {
+    score.set(0);
+    currentBearing = randomInt(directions.NORTH, directions.WEST);
+    headPos = [randomInt(0, maxX), randomInt(0, maxY)];
+    tailTiles = [];
+    tailLen = 5;
+    currentBearing = randomInt(directions.NORTH, directions.WEST);
+    foodLoc = [[randomInt(0, maxX), randomInt(0, maxY)]];
+  }
 
   function putFood() {
     foodLoc.push([randomInt(minX, maxX), randomInt(minY, maxY)]);
@@ -51,6 +59,12 @@
   function checkForFood(head) {
     if (foodLoc.some((item) => _.isEqual(item, head))) {
       eatFood(head);
+    }
+  }
+
+  function checkForCollision(head) {
+    if (tailTiles.some((item) => _.isEqual(item, head))) {
+      currentGameState = gameState.GAME_OVER;
     }
   }
 
@@ -87,6 +101,7 @@
     }
 
     checkForFood([x, y]);
+    checkForCollision([x, y]);
     return [x, y];
   }
 
@@ -109,16 +124,20 @@
         currentBearing = directions.EAST;
         break;
       case " ":
-        if (currentGameState === gameState.NOT_STARTED_YET) {
+        if (
+          currentGameState === gameState.NOT_STARTED_YET ||
+          currentGameState === gameState.GAME_OVER
+        ) {
+          resetGame();
           currentGameState = gameState.PLAYING;
           break;
         }
         if (currentGameState === gameState.PLAYING) {
-          currentGameState = gameState.PAUSED
+          currentGameState = gameState.PAUSED;
           break;
         }
         if (currentGameState === gameState.PAUSED) {
-          currentGameState = gameState.PLAYING
+          currentGameState = gameState.PLAYING;
           break;
         }
         break;
@@ -127,8 +146,7 @@
 
   renderable((props, dt) => {
     const { context, width } = props;
-    marginLeft = (width-((size+lineWidth)*maxX))/2;
-
+    marginLeft = (width - (size + lineWidth) * maxX) / 2;
 
     context.save();
 
@@ -224,8 +242,7 @@
 <!-- 
 
   Known issues: 
-  * you can quickly change direction and reverse the snake if you can manage to squeeze it below one tick duration
+  * you can quickly change direction and reverse the snake if you can manage to squeeze it below one tick duration, but you lose if you cheat so ¯\_(ツ)_/¯
   * food can spawn on your tail lol
-  * cant die yet
-
+  * collision check doesnt work on the right edge for food, tail probably too
  -->
