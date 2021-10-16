@@ -91,29 +91,37 @@
   }
 
   function handleKeydown(event) {
-    console.log(event.key)
     switch (event.key) {
       case "ArrowDown":
-        if (currentBearing == directions.NORTH) break;
+        if (currentBearing === directions.NORTH) break;
         currentBearing = directions.SOUTH;
         break;
       case "ArrowLeft":
-        if (currentBearing == directions.EAST) break;
+        if (currentBearing === directions.EAST) break;
         currentBearing = directions.WEST;
         break;
       case "ArrowUp":
-        if (currentBearing == directions.SOUTH) break;
+        if (currentBearing === directions.SOUTH) break;
         currentBearing = directions.NORTH;
         break;
       case "ArrowRight":
-        if (currentBearing == directions.WEST) break;
+        if (currentBearing === directions.WEST) break;
         currentBearing = directions.EAST;
         break;
       case " ":
-        if (currentGameState == gameState.NOT_STARTED_YET) {
+        if (currentGameState === gameState.NOT_STARTED_YET) {
           currentGameState = gameState.PLAYING;
+          break;
         }
-        break
+        if (currentGameState === gameState.PLAYING) {
+          currentGameState = gameState.PAUSED
+          break;
+        }
+        if (currentGameState === gameState.PAUSED) {
+          currentGameState = gameState.PLAYING
+          break;
+        }
+        break;
     }
   }
 

@@ -3,8 +3,8 @@
   import Background from "./Background.svelte";
   import FPS from "./FPS.svelte";
   import Score from "./Score.svelte";
-  import GameButton from "./GameButton.svelte";
   import SnakeGame from "./SnakeGame.svelte";
+  import HelpText from "./HelpText.svelte";
 
   import { color0 } from "./colors";
   
@@ -15,6 +15,7 @@
   <SnakeGame />
   <FPS />
   <Score />
+  <HelpText x={40} y={40}/>
 </Canvas>
 
 <style>
