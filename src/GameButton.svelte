@@ -13,8 +13,8 @@
   const r = x + w;
   const b = y + h;
 
-  renderable((state, dt) => {
-    const { context, score } = state;
+  renderable((props, dt) => {
+    const { context, score } = props;
 
     context.beginPath();
     context.moveTo(x + radius, y);

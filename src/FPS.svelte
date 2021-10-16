@@ -7,7 +7,7 @@
 	let elapsed = 0;
 	let frames = 0;
 	let prevTime = performance.now();
-	renderable((state, dt) => {
+	renderable((props, dt) => {
 		let time = performance.now();
 		frames++;
 		if ( time >= prevTime + 1000 ) {

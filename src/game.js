@@ -13,6 +13,13 @@ export const time = writable(0);
 //todo: dont make this global state
 export const score = writable(0);
 
+export const gameState = Object.freeze({
+    NOT_STARTED_YET: 0,
+    PLAYING: 1,
+    PAUSED: 2,
+    GAME_OVER: 3,
+})
+
 // A more convenient store for grabbing all game props
 export const props = deriveObject({
 	context,
@@ -63,4 +70,5 @@ function deriveObject (obj) {
 			return dict;
 		}, {});
 	});
+
 }

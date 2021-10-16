@@ -1,12 +1,20 @@
 <script>
-  import { renderable } from "./game.js";
+  import { renderable, width } from "./game.js";
   import { color0, color1, color2, color3, color4 } from "./colors.js";
   import { randomInt } from "./util.js";
-  import { score } from "./game.js"
+  import { score, gameState } from "./game.js";
   import _ from "lodash";
 
+  import HudOverlay from "./HudOverlay.svelte";
+
+  const directions = Object.freeze({
+    NORTH: 0,
+    EAST: 1,
+    SOUTH: 2,
+    WEST: 3,
+  });
+
   const size = 20;
-  const marginLeft = 80;
   const marginTop = 80;
   const lineWidth = 1;
 
@@ -16,31 +24,17 @@
   const maxX = 25;
   const minY = 0;
   const maxY = 25;
+  let marginLeft = 0;
 
-  const directions = Object.freeze({
-    NORTH: 0,
-    EAST: 1,
-    SOUTH: 2,
-    WEST: 3,
-  });
-
-  const gameState = Object.freeze({
-    NOT_STARTED_YET: 0,
-    PLAYING: 1,
-    PAUSED: 2,
-    GAME_OVER: 3,
-  })
-
-
-  let currentGameState = gameState.NOT_STARTED_YET;
+  let currentGameState = gameState.PLAYING;
 
   // let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
-  let headPos = [10,5];
+  let headPos = [10, 5];
   let tailTiles = [];
   let tailLen = 5;
   // let currentBearing = randomInt(directions.NORTH, directions.WEST);
   let currentBearing = directions.WEST;
-  let foodLoc = [[5,5]];
+  let foodLoc = [[5, 5]];
 
   function putFood() {
     foodLoc.push([randomInt(minX, maxX), randomInt(minY, maxY)]);
@@ -48,15 +42,14 @@
 
   function eatFood(food) {
     tailLen += 1;
-    _.remove(foodLoc, (current) => _.isEqual(current,food))
-    score.update(it => it + 1);
+    _.remove(foodLoc, (current) => _.isEqual(current, food));
+    score.update((it) => it + 1);
 
     putFood();
   }
 
   function checkForFood(head) {
-
-    if (foodLoc.some(item => _.isEqual(item, head))) {
+    if (foodLoc.some((item) => _.isEqual(item, head))) {
       eatFood(head);
     }
   }
@@ -93,7 +86,7 @@
       return [x, maxY - 1];
     }
 
-    checkForFood([x, y])
+    checkForFood([x, y]);
     return [x, y];
   }
 
@@ -119,17 +112,19 @@
   }
 
   renderable((props, dt) => {
-    const { context } = props;
+    const { context, width } = props;
+    marginLeft = (width-((size+lineWidth)*maxX))/2;
+
 
     context.save();
-    context.lineWidth = lineWidth;
 
+    context.lineWidth = lineWidth;
     for (let y = 0; y < maxY; y++) {
       for (let x = 0; x < maxX; x++) {
         context.beginPath();
         context.rect(
-          x + marginLeft + x * size,
-          y + marginTop + y * size,
+          marginLeft + x * (size + lineWidth),
+          marginTop + y * (size + lineWidth),
           size,
           size
         );
@@ -145,8 +140,8 @@
     context.strokeStyle = color2;
     context.fillStyle = color3;
     context.rect(
-      marginTop + headPos[0] * (size + lineWidth),
-      marginLeft + headPos[1] * (size + lineWidth),
+      marginLeft + headPos[0] * (size + lineWidth),
+      marginTop + headPos[1] * (size + lineWidth),
       size,
       size
     );
@@ -159,8 +154,8 @@
       context.strokeStyle = color3;
       context.fillStyle = color2;
       context.rect(
-        marginTop + tailTile[0] * (size + lineWidth),
-        marginLeft + tailTile[1] * (size + lineWidth),
+        marginLeft + tailTile[0] * (size + lineWidth),
+        marginTop + tailTile[1] * (size + lineWidth),
         size,
         size
       );
@@ -174,8 +169,8 @@
       context.strokeStyle = color4;
       context.fillStyle = color4;
       context.rect(
-        marginTop + food[0] * (size + lineWidth),
-        marginLeft + food[1] * (size + lineWidth),
+        marginLeft + food[0] * (size + lineWidth),
+        marginTop + food[1] * (size + lineWidth),
         size,
         size
       );
@@ -206,11 +201,11 @@
   });
 </script>
 
+<HudOverlay {currentGameState} />
 <svelte:window on:keydown={handleKeydown} />
 
 <!-- The following allows this component to nest children -->
 <slot />
-
 
 <!-- 
 

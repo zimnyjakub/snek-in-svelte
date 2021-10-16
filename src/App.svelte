@@ -7,6 +7,7 @@
   import SnakeGame from "./SnakeGame.svelte";
 
   import { color0 } from "./colors";
+  
 </script>
 
 <Canvas>
