@@ -1,5 +1,5 @@
 <script>
-  import { renderable, width } from "./game.js";
+  import { renderable } from "./game.js";
   import { color0, color1, color2, color3, color4 } from "./colors.js";
   import { randomInt } from "./util.js";
   import { score, gameState } from "./game.js";
@@ -26,7 +26,7 @@
   const maxY = 25;
   let marginLeft = 0;
 
-  let currentGameState = gameState.PLAYING;
+  let currentGameState = gameState.NOT_STARTED_YET;
 
   // let headPos = [randomInt(0, maxX), randomInt(0, maxY)];
   let headPos = [10, 5];
@@ -91,6 +91,7 @@
   }
 
   function handleKeydown(event) {
+    console.log(event.key)
     switch (event.key) {
       case "ArrowDown":
         if (currentBearing == directions.NORTH) break;
@@ -108,6 +109,11 @@
         if (currentBearing == directions.WEST) break;
         currentBearing = directions.EAST;
         break;
+      case " ":
+        if (currentGameState == gameState.NOT_STARTED_YET) {
+          currentGameState = gameState.PLAYING;
+        }
+        break
     }
   }
 

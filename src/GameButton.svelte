@@ -3,15 +3,20 @@
   import { renderable } from "./game.js";
   import { color1, color3 } from "./colors.js";
 
-  export let x = 800;
-  export let y = 600;
-  export let w = 200;
-  export let h = 80
+  export let x = 0;
+  export let y = 0;
+  export let width = 200;
+  export let height = 80;
   export let radius = 20;
-  export let buttonText = "MORDO";
+  export let text = "MORDO";
 
-  const r = x + w;
-  const b = y + h;
+    let r = x + width;
+    let b = y + height;
+
+  $: {
+    r = x + width;
+    b = y + height;
+  }
 
   renderable((props, dt) => {
     const { context, score } = props;
@@ -20,7 +25,7 @@
     context.moveTo(x + radius, y);
     context.lineTo(r - radius, y);
     context.quadraticCurveTo(r, y, r, y + radius);
-    context.lineTo(r, y + h - radius);
+    context.lineTo(r, y + height - radius);
     context.quadraticCurveTo(r, b, r - radius, b);
     context.lineTo(x + radius, b);
     context.quadraticCurveTo(x, b, x, b - radius);
@@ -36,14 +41,15 @@
 </script>
 
 <Text
-	text={buttonText}
-	fontSize=24
-	fontFamily='Arial Black'
-	align='center'
-	baseline='middle'
-    color = {color3}
-    x={x+w/2}
-	y={y+h/2} />
+  {text}
+  fontSize="24"
+  fontFamily="Arial Black"
+  align="center"
+  baseline="middle"
+  color={color3}
+  x={x + width / 2}
+  y={y + height / 2}
+/>
 
 <!-- The following allows this component to nest children -->
 <slot />

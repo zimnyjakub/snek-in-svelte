@@ -1,10 +1,14 @@
 <script>
-  import { gameState, renderable } from "./game.js";
+  import { gameState, renderable, width } from "./game.js";
+  import GameButton from "./GameButton.svelte";
 
   export let currentGameState;
 
+  const btnWidth = 600;
+
   renderable((props) => {
     const { context, width, height } = props;
+
     switch (currentGameState) {
       case gameState.PLAYING:
         break;
@@ -16,5 +20,13 @@
     }
   });
 </script>
+
+<GameButton
+  width={btnWidth}
+  height={100}
+  x={($width - btnWidth) / 2}
+  y={200}
+  text={"press space to play snek"}
+/>
 
 <slot />
