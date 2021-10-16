@@ -32,7 +32,7 @@ import { claim_text } from 'svelte/internal';
 				return;
 			}
 
-			lines.forEach((it, i) => context.fillText(it, x, y+64*i));
+			lines.forEach((it, i) => context.fillText(it, x, y+64*i-64));
 		}
 	});
 </script>

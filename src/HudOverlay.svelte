@@ -6,19 +6,16 @@
 
   export let currentGameState;
 
-  const btnWidth = 600;
-
-  let tip = tips[Math.floor(Math.random() * tips.length)];
+  const btnWidth = 800;
 
   let text = "press space to play snek";
   let btnX = ($width - btnWidth) / 2;
-  let btnHeight= 100;
+  let btnHeight = 100;
 
-  $: {
-    if (currentGameState === gameState.PAUSED) {
-      text = tips[Math.floor(Math.random() * tips.length)];
-      btnHeight = 200;
-    }
+  $: btnX = ($width - btnWidth) / 2;
+  $: if (currentGameState === gameState.PAUSED) {
+    text = tips[Math.floor(Math.random() * tips.length)];
+    btnHeight = 300;
   }
 
   renderable((props) => {

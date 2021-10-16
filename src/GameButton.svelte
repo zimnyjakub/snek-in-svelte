@@ -53,7 +53,7 @@
   baseline="middle"
   color={color3}
   x={x + width / 2}
-  y={y + height / 2 - 16}
+  y={y + height / 2}
 />
 
 <!-- The following allows this component to nest children -->
